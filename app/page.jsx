@@ -63,7 +63,7 @@ export default function Home() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  
+
   const recaptchaRef = useRef();
   const sourceRef = useRef();
   const destRef = useRef();
@@ -117,8 +117,12 @@ export default function Home() {
     });
   };
 
-  const handleCaptcha = async ()=>{
+const handleCaptcha = async () => {
+  try {
     const recaptchaResponse = await recaptchaRef.current?.executeAsync();
+
+    if (!recaptchaResponse) return false;
+
     recaptchaRef.current.reset();
 
     const response = await fetch("/api/validatePathToken", {
@@ -129,8 +133,15 @@ export default function Home() {
       body: JSON.stringify({ recaptchaResponse }),
     });
 
-    return response.ok;
+    const data = await response.json();
+
+    return data.success === true;
+  } catch (err) {
+    console.error("Captcha error:", err);
+    return false;
   }
+};
+
 
   const handleWeatherAlong = async () => {
     if (!source.loc || !destination.loc) {
@@ -143,6 +154,13 @@ export default function Home() {
       );
       return;
     }
+
+    const captchaValid = await handleCaptcha();
+    if (!captchaValid) {
+      setError("⚠️ Captcha validation failed. Please try again.");
+      return;
+    }
+
     setError(""); // clear previous error
     setLoading(true);
     try {
@@ -165,7 +183,7 @@ export default function Home() {
         for (const waypoint of area) {
           const weather = await getWeatherByTime(
             waypoint.destination,
-            selectedTimestamp.getTime() + waypoint.duration*1000
+            selectedTimestamp.getTime() + waypoint.duration * 1000
           );
           const placeName = await getPlaceName(waypoint.destination);
           areaWeather.push({ ...waypoint, weather, ...placeName });
@@ -304,8 +322,12 @@ export default function Home() {
           </select>
         </div>
         <div className="hidden">
-          <Captcha  ref={recaptchaRef} size="invisible" sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}/>
-          </div>
+          <Captcha
+            ref={recaptchaRef}
+            size="invisible"
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+          />
+        </div>
         {/* Submit */}
         <button
           onClick={handleWeatherAlong}
