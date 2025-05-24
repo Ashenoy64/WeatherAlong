@@ -39,7 +39,7 @@ export default function WeatherIntro() {
         <ul className="list-disc pl-6 mt-2 space-y-1">
           <li>
             Enter your <strong>source</strong> and <strong>destination</strong>{" "}
-            — either by name or coordinates.
+            — either by name or coordinates. [ Currently, only Indian places]
           </li>
           <li>
             Select a <strong>start time</strong> for your trip (today only).
