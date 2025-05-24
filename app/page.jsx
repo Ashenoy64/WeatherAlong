@@ -1,5 +1,5 @@
 "use client";
-
+import WeatherIntro from "@/components/Intro";
 import { useState, useEffect, useRef } from "react";
 import {
   getAutoComplete,
@@ -10,6 +10,7 @@ import { getDirections, getPlaceName } from "@/lib/navigation";
 import { getWeatherByTime } from "@/lib/weather";
 import WeatherAlongRoute from "@/components/WeatherAlong";
 import { CheckCircle, MapPinned } from "lucide-react";
+import Captcha from "react-google-recaptcha";
 
 function debounce(fn, delay) {
   let timer;
@@ -62,7 +63,8 @@ export default function Home() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  
+  const recaptchaRef = useRef();
   const sourceRef = useRef();
   const destRef = useRef();
 
@@ -114,6 +116,21 @@ export default function Home() {
       selected: true,
     });
   };
+
+  const handleCaptcha = async ()=>{
+    const recaptchaResponse = await recaptchaRef.current?.executeAsync();
+    recaptchaRef.current.reset();
+
+    const response = await fetch("/api/validatePathToken", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ recaptchaResponse }),
+    });
+
+    return response.ok;
+  }
 
   const handleWeatherAlong = async () => {
     if (!source.loc || !destination.loc) {
@@ -232,6 +249,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center gap-6 p-6 bg-gradient-to-tr from-blue-100 to-indigo-200 min-h-screen text-black">
+      <WeatherIntro></WeatherIntro>
       <div className="bg-white rounded-2xl shadow-md p-6 w-full max-w-2xl">
         <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">
           <MapPinned className="inline mr-2 text-indigo-600" /> Plan Your
@@ -285,7 +303,9 @@ export default function Home() {
             <option value="time">Time</option>
           </select>
         </div>
-
+        <div className="hidden">
+          <Captcha  ref={recaptchaRef} size="invisible" sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}/>
+          </div>
         {/* Submit */}
         <button
           onClick={handleWeatherAlong}
