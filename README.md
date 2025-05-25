@@ -1,4 +1,4 @@
-# 🌤️ Weather Along Route
+# 🌤️ Weather Along 
 
 A web app built with **Next.js** that helps users visualize weather forecasts along a travel route. Whether you're commuting, planning a road trip, or cycling across town, this tool provides weather insights **at multiple points along your path**, not just at the start or end.
 
