@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌤️ Weather Along Route
 
-## Getting Started
+A web app built with **Next.js** that helps users visualize weather forecasts along a travel route. Whether you're commuting, planning a road trip, or cycling across town, this tool provides weather insights **at multiple points along your path**, not just at the start or end.
 
-First, run the development server:
+
+## 🚀 Features
+
+- 🔍 **Smart Location Input**  
+  - Autocomplete search for source and destination  
+  - Option to manually enter coordinates (lat,lng)
+
+- 🧭 **Route-Based Weather Insights**  
+  - View weather updates at intervals along your route  
+  - Segment the route by **distance** or **time**
+
+- 🕒 **Time-Aware Forecasting**  
+  - Choose a start time (today only) to get future weather forecasts for each segment
+
+- 🧠 **CAPTCHA Validation**  
+  - Integrated invisible reCAPTCHA v2 to protect API access
+
+- 🌐 **OLA Maps Integration**  
+  - Fetches routes and place names using OLA Maps APIs
+
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/your-username/weather-along-route.git
+cd weather-along-route
+npm install
+````
+
+### 🔐 Environment Variables
+
+Create a `.env.local` file in the root:
+
+```env
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
+RECAPTCHA_SECRET=your_recaptcha_secret
+OLA_API_KEY=your_google_maps_api_key
+WEATHER_API_KEY=your_weather_api_key
+OLA_BASE_URL=https://api.olamaps.io
+WEATHER_BASE_URL= http://api.weatherapi.com/v1
+DEBOUNCE_TIMEOUT=300
+URL=url-site-url
+```
+
+> Make sure your Google API key has both Places API and Directions API enabled.
+
+---
+
+## 💻 Run Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📄 License
 
-## Learn More
+This project is licensed under the [MIT License](./LICENSE) — © 2025 Avanish Shenoy
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
