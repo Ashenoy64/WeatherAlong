@@ -46,8 +46,6 @@ DEBOUNCE_TIMEOUT=300
 URL=url-site-url
 ```
 
-> Make sure your Google API key has both Places API and Directions API enabled.
-
 ---
 
 ## 💻 Run Locally
